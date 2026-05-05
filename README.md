@@ -1,4 +1,10 @@
-# QGroundControl Ground Control Station
+# Custom Readme
+Install the deps on macos and build for the first time with the install.sh script. Compile new changes with the compile.sh script.
+
+NOTE: every recompile will make mac reprompt for permission requests fyi
+
+
+# QGroundControl Ground Control Station (old)
 
 [![Releases](https://img.shields.io/github/release/mavlink/QGroundControl.svg)](https://github.com/mavlink/QGroundControl/releases)
 
