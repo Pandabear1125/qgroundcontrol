@@ -23,6 +23,42 @@ ToolStripActionList {
             iconSource:     "/qmlimages/Plan.svg"
             onTriggered:    mainWindow.showPlanView()
         },
+
+		ToolStripAction {
+			text: qsTr("Console")
+			iconSource: "/qmlimages/MavlinkConsoleIcon"
+
+			onTriggered: {
+				mainWindow.createrWindowedAnalyzePage(
+					qsTr("MAVLink Console"),
+					"qrc:/qml/MavlinkConsolePage.qml"
+				)
+
+				mainWindow.showFlyView()
+			}
+		},
+
+		ToolStripAction {
+			text: qsTr("Logs")
+			iconSource: "/qmlimages/LogDownloadIcon"
+
+			onTriggered: {
+				mainWindow.createrWindowedAnalyzePage(
+					qsTr("Log Download"),
+					"qrc:/qml/LogDownloadPage.qml"
+				)
+
+				mainWindow.showFlyView()
+			}
+		},
+
+		ToolStripAction {
+			text: qsTr("Parameters")
+			iconSource: "/qmlimages/Gears.svg"
+
+			onTriggered: mainWindow.showParametersTool()
+		},
+
         PreFlightCheckListShowAction { onTriggered: displayPreFlightChecklist() },
         GuidedActionTakeoff { },
         GuidedActionLand { },

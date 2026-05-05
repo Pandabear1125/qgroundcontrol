@@ -39,6 +39,15 @@ Rectangle {
     property bool   _fullParameterVehicleAvailable: QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable && !QGroundControl.multiVehicleManager.activeVehicle.parameterManager.missingParameters
     property var    _corePlugin:                    QGroundControl.corePlugin
 
+	function showParametersPanel() {
+		if (mainWindow.preventViewSwitch()) {
+			return
+		}
+
+		parametersButton.checked = true
+		panelLoader.setSource("SetupParameterEditor.qml")
+	}
+
     function showSummaryPanel() {
         if (mainWindow.preventViewSwitch()) {
             return
@@ -288,16 +297,18 @@ Rectangle {
                 }
             }
 
-            SubMenuButton {
-                setupIndicator:     false
-                exclusiveGroup:     setupButtonGroup
-                visible:            QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable &&
-                                    !QGroundControl.multiVehicleManager.activeVehicle.usingHighLatencyLink &&
-                                    _corePlugin.showAdvancedUI
-                text:               qsTr("Parameters")
-                Layout.fillWidth:   true
-                onClicked:          showPanel(this, "SetupParameterEditor.qml")
-            }
+			SubMenuButton {
+				id: parametersButton
+
+				setupIndicator: false
+				exclusiveGroup: setupButtonGroup
+				visible: QGroundControl.multiVehicleManager.parameterReadyVehicleAvailable &&
+						 !QGroundControl.multiVehicleManager.activeVehicle.usingHighLatencyLink &&
+						 _corePlugin.showAdvancedUI
+				text: qsTr("Parameters")
+				Layout.fillWidth: true
+				onClicked: showParametersPanel()
+			}
 
         }
     }

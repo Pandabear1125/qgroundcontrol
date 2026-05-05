@@ -163,6 +163,12 @@ ApplicationWindow {
         showTool(qsTr("Vehicle Setup"), "SetupView.qml", "/qmlimages/Gears.svg")
     }
 
+	function showParametersTool() {
+		showSetupTool()
+
+		toolDrawer.loader.item.showParametersPanel()
+	}
+
     function showSettingsTool() {
         showTool(qsTr("Application Settings"), "AppSettings.qml", "/res/QGCLogoWhite")
     }
