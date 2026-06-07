@@ -3,6 +3,39 @@ Install the deps on macos and build for the first time with the install.sh scrip
 
 NOTE: every recompile will make mac reprompt for permission requests fyi
 
+## Mach MAVLink generation
+
+This fork defaults QGC to the `qgc_mach` dialect, but the generated MAVLink C headers are not committed. Generate them locally at `libs/mavlink/include/mavlink/v2.0` before configuring or building QGC.
+
+The generated header directory is ignored by git so custom MAVLink headers do not land in the public fork. Regenerate the local headers after cloning this branch and whenever the firmware MAVLink XML changes. PX4 firmware is the source of truth: the generator builds `qgc_mach` from PX4 `all.xml` plus the messages in the Mach firmware XML you provide.
+
+```sh
+python3 tools/generate_qgc_mach_mavlink.py \
+    --px4-repo /path/to/px4 \
+    --px4-ref <ref-or-commit> \
+    --source-xml <mach-dialect.xml>
+```
+
+The default generated dialect is `qgc_mach`. To use a different dialect name:
+
+```sh
+python3 tools/generate_qgc_mach_mavlink.py \
+    --px4-repo /path/to/px4 \
+    --px4-ref <ref-or-commit> \
+    --source-xml <mach-dialect.xml> \
+    --dialect <dialect-name>
+```
+
+Then verify the generated tree:
+
+```sh
+python3 tools/verify_qgc_mach_mavlink.py
+```
+
+The verifier checks the generated message IDs, names, lengths, CRC extras, message-info table entries, and manifest. If you need to generate with a specific mavgen executable, pass `--mavgen-cmd` or set `MAVGEN_CMD`.
+
+QGC defaults to `qgc_mach` for both CMake and qmake. Configure/build will fail if the generated headers are missing. For CMake overrides, use `QGC_MAVLINK_ROOT` and `QGC_MAVLINK_DIALECT`; for qmake overrides, keep using `MAVLINKPATH_REL`, `MAVLINKPATH`, and `MAVLINK_CONF`.
+
 
 # QGroundControl Ground Control Station (old)
 

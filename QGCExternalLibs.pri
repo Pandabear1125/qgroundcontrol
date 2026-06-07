@@ -17,11 +17,9 @@ WindowsBuild {
 #
 # [REQUIRED] Add support for the MAVLink communications protocol.
 #
-# By default MAVLink dialect is hardwired to arudpilotmega. The reason being
-# the current codebase supports both PX4 and APM flight stack. PX4 flight stack
-# only uses common MAVLink specifications, whereas APM flight stack uses custom
-# MAVLink specifications which adds to common. So by using the adupilotmega dialect
-# QGC can support both in the same codebase.
+# By default this fork uses the qgc_mach dialect. Generate its MAVLink headers
+# locally from firmware source before building; the generated header tree is
+# intentionally ignored by git.
 
 # Once the mavlink helper routines include support for multiple dialects within
 # a single compiled codebase this hardwiring of dialect can go away. But until then
@@ -54,7 +52,7 @@ isEmpty(MAVLINK_CONF) {
         MAVLINK_CONF = $$fromfile(user_config.pri, MAVLINK_CONF)
         message($$sprintf("Using user-supplied mavlink dialect '%1' specified in user_config.pri", $$MAVLINK_CONF))
     } else {
-        MAVLINK_CONF = all
+        MAVLINK_CONF = qgc_mach
         message($$sprintf("Using MAVLink dialect '%1'.", $$MAVLINK_CONF))
     }
 }
@@ -76,7 +74,7 @@ count(MAVLINK_CONF, 1) {
         INCLUDEPATH += $$MAVLINKPATH/$$MAVLINK_CONF
         DEFINES += $$sprintf('QGC_USE_%1_MESSAGES', $$upper($$MAVLINK_CONF))
     } else {
-        error($$sprintf("MAVLink dialect '%1' does not exist at '%2'!", $$MAVLINK_CONF, $$MAVLINKPATH_REL))
+        error($$sprintf("MAVLink dialect '%1' does not exist at '%2'! Run tools/generate_qgc_mach_mavlink.py before building.", $$MAVLINK_CONF, $$MAVLINKPATH_REL))
     }
 } else {
     error(Only a single mavlink dialect can be specified in MAVLINK_CONF)

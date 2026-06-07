@@ -158,14 +158,28 @@ endif()
 # Sets the default flags for compilation and linking.
 include(CompileOptions)
 
+set(QGC_MAVLINK_ROOT "${CMAKE_SOURCE_DIR}/libs/mavlink/include/mavlink/v2.0" CACHE PATH "Generated MAVLink C header root")
+set(QGC_MAVLINK_DIALECT "qgc_mach" CACHE STRING "MAVLink dialect to include")
+
+if(NOT IS_ABSOLUTE "${QGC_MAVLINK_ROOT}")
+	get_filename_component(QGC_MAVLINK_ROOT "${QGC_MAVLINK_ROOT}" ABSOLUTE BASE_DIR "${CMAKE_SOURCE_DIR}")
+endif()
+
+set(QGC_MAVLINK_DIALECT_DIR "${QGC_MAVLINK_ROOT}/${QGC_MAVLINK_DIALECT}")
+if(NOT EXISTS "${QGC_MAVLINK_DIALECT_DIR}/mavlink.h")
+	message(FATAL_ERROR "MAVLink dialect '${QGC_MAVLINK_DIALECT}' does not exist at '${QGC_MAVLINK_DIALECT_DIR}'. Run tools/generate_qgc_mach_mavlink.py before configuring QGC.")
+endif()
+
+message(STATUS "MAVLink root: ${QGC_MAVLINK_ROOT}")
+message(STATUS "MAVLink dialect: ${QGC_MAVLINK_DIALECT}")
+
 include_directories(
 	libs/eigen
 
 	libs/libevents
 
-	libs/mavlink/include/mavlink/v2.0
-	libs/mavlink/include/mavlink/v2.0/all
-	libs/mavlink/include/mavlink/v2.0/common
+	${QGC_MAVLINK_ROOT}
+	${QGC_MAVLINK_DIALECT_DIR}
 
 	libs/shapelib
 )
