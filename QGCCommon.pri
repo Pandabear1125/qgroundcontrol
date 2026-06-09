@@ -108,7 +108,8 @@ linux {
         QMAKE_CXXFLAGS_WARN_ON += -Werror \
             -Wno-unused-parameter \         # gst-plugins-good
             -Wno-unused-but-set-variable \ # eigen & QGCTileCacheWorker.cpp
-            -Wno-deprecated-declarations    # eigen
+            -Wno-deprecated-declarations \  # eigen
+            -Wno-deprecated-literal-operator # nlohmann_json on newer Apple Clang
     } else {
         error("Unsupported Mac toolchain, only 64-bit LLVM+clang is supported")
     }

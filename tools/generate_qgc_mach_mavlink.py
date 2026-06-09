@@ -20,6 +20,8 @@ from pathlib import Path
 
 DEFAULT_DIALECT = "qgc_mach"
 DEFAULT_INCLUDE_XML = "all.xml"
+DEFAULT_PX4_REF = "HEAD"
+DEFAULT_SOURCE_XML = "mach.xml"
 DEFAULT_XML_DIR = "src/modules/mavlink/mavlink/message_definitions/v1.0"
 DEFAULT_PYMAVLINK_DIR = "src/modules/mavlink/mavlink/pymavlink"
 WIRE_PROTOCOL = "2.0"
@@ -299,11 +301,15 @@ def _write_manifest(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--px4-repo", type=Path, required=True, help="PX4 repository containing MAVLink XML.")
-    parser.add_argument("--px4-ref", required=True, help="PX4 ref/commit to generate from.")
+    parser.add_argument(
+        "--px4-ref",
+        default=DEFAULT_PX4_REF,
+        help="PX4 ref/commit to generate from. Defaults to the supplied PX4 repo's HEAD.",
+    )
     parser.add_argument("--xml-dir", default=DEFAULT_XML_DIR, help="MAVLink XML directory inside PX4.")
     parser.add_argument(
         "--source-xml",
-        required=True,
+        default=DEFAULT_SOURCE_XML,
         help="Mach MAVLink XML to merge. Relative paths are resolved inside --xml-dir.",
     )
     parser.add_argument(

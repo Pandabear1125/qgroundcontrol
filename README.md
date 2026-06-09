@@ -7,23 +7,16 @@ NOTE: every recompile will make mac reprompt for permission requests fyi
 
 This fork defaults QGC to the `qgc_mach` dialect, but the generated MAVLink C headers are not committed. Generate them locally at `libs/mavlink/include/mavlink/v2.0` before configuring or building QGC.
 
-The generated header directory is ignored by git so custom MAVLink headers do not land in the public fork. Regenerate the local headers after cloning this branch and whenever the firmware MAVLink XML changes. PX4 firmware is the source of truth: the generator builds `qgc_mach` from PX4 `all.xml` plus the messages in the Mach firmware XML you provide.
+The generated header directory is ignored by git so custom MAVLink headers do not land in the public fork. Regenerate the local headers after cloning this branch and whenever the firmware MAVLink XML changes. PX4 firmware is the source of truth: first check out the PX4 repo at the firmware branch or commit you want to use, then run the generator. It builds `qgc_mach` from PX4 `all.xml` plus `mach.xml` in the PX4 MAVLink XML directory.
 
 ```sh
-python3 tools/generate_qgc_mach_mavlink.py \
-    --px4-repo /path/to/px4 \
-    --px4-ref <ref-or-commit> \
-    --source-xml <mach-dialect.xml>
+python3 tools/generate_qgc_mach_mavlink.py --px4-repo /path/to/px4
 ```
 
-The default generated dialect is `qgc_mach`. To use a different dialect name:
+By default, the generator uses the supplied PX4 repo's `HEAD`, reads `mach.xml`, and writes the `qgc_mach` dialect. To use a different dialect name:
 
 ```sh
-python3 tools/generate_qgc_mach_mavlink.py \
-    --px4-repo /path/to/px4 \
-    --px4-ref <ref-or-commit> \
-    --source-xml <mach-dialect.xml> \
-    --dialect <dialect-name>
+python3 tools/generate_qgc_mach_mavlink.py --px4-repo /path/to/px4 --dialect <dialect-name>
 ```
 
 Then verify the generated tree:
