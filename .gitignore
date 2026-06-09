@@ -91,3 +91,6 @@ Qt*-linux*.tar.*
 node_modules/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+
+# Generated locally by tools/generate_qgc_mach_mavlink.py.
+libs/mavlink/include/mavlink/v2.0/
